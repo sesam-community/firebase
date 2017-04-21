@@ -12,8 +12,6 @@ admin.initializeApp({
   databaseURL: "https://" + projectId + ".firebaseio.com"
 });
 
-var db = admin.database();
-
 // we need to encode and decode the type of the value we use as since marker
 var encode = function (since) {
   if (typeof since === "number") {
@@ -41,7 +39,7 @@ router.get("/:path", function (request, response) {
   var updatedPath = query.since_path;
   var updated = decode(query.since);
   var path = request.params.path;
-  var ref = db.ref(path);
+  var ref = admin.database().ref(path);
   if (updatedPath && updated) {
     ref = ref.orderByChild(updatedPath).startAt(updated);
   }
@@ -68,7 +66,7 @@ router.get("/:path", function (request, response) {
 
 router.post("/:path", function (request, response) {
   var path = request.params.path;
-  var ref = db.ref(path);
+  var ref = admin.database().ref(path);
   var entities = request.post;
   // might get one entity or a list
   var entities = [].concat(entities);
