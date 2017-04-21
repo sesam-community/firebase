@@ -1,0 +1,14 @@
+[
+  {
+    "_id": "0001",
+    "name": "Baard",
+    "last-modified": {
+      ".sv": "timestamp"
+    }
+  },
+  {
+    "_id": "0002",
+    "name": "Johannes",
+    "_deleted": false
+  }
+]
