@@ -1,6 +1,8 @@
 # sesam-firebase-nodesdk
 Reads and writes streams of entities to Firebase Realtime DB.
 
+[![Build Status](https://travis-ci.org/sesam-community/sesam-firebase-nodesdk.svg?branch=master)](https://travis-ci.org/sesam-community/sesam-firebase-nodesdk)
+
 Implemented using the Firebase NodeJS Admin SDK.
 
 Sinks and sources defines a path to where in the Firebase DB tree the data should be read or written to.
