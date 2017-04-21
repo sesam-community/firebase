@@ -73,6 +73,11 @@ router.post("/:path", function (request, response) {
   // might get one entity or a list
   var entities = [].concat(entities);
 
+  if (entities.length == 0) {
+    response.writeHead(200, { "Content-Type": "plain/text" });
+    response.end("Done, nothing to do!");
+  }
+
   var notCompleted = entities.length;
   var errors = [];
   var completionHandler = function (entity, error) {
