@@ -72,7 +72,7 @@ An example of system config:
       },
       "PROJECT_ID": "my-firebase-instance"
     },
-    "image": "sesamcommunity/sesam-firebase-db:latest",
+    "image": "sesamcommunity/sesam-firebase-nodesdk:latest",
     "port": 5000
   }
 },
