@@ -1,4 +1,4 @@
-# sesam-firebase
+# sesam-firebase-nodesdk
 Reads and writes streams of entities to Firebase Realtime DB.
 
 Implemented using the Firebase NodeJS Admin SDK.
