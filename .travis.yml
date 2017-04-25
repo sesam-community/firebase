@@ -11,7 +11,7 @@ script: true
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker build --build-arg BuildNumber="$TRAVIS_BUILD_NUMBER" --build-arg Commit="$TRAVIS_COMMIT" -t sesamcommunity/sesam-firebase-nodesdk .;
+    docker build --build-arg BuildNumber="$TRAVIS_BUILD_NUMBER" --build-arg Commit="$TRAVIS_COMMIT" -t sesamcommunity/firebase .;
     docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push sesamcommunity/sesam-firebase-nodesdk:latest;
+    docker push sesamcommunity/firebase:latest;
     fi
