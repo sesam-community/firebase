@@ -1,7 +1,7 @@
 # sesam-firebase-nodesdk
 Reads and writes streams of entities to Firebase Realtime DB.
 
-[![Build Status](https://travis-ci.org/sesam-community/sesam-firebase-nodesdk.svg?branch=master)](https://travis-ci.org/sesam-community/sesam-firebase-nodesdk)
+[![Build Status](https://travis-ci.org/sesam-community/firebase.svg?branch=master)](https://travis-ci.org/sesam-community/firebase)
 
 Implemented using the Firebase NodeJS Admin SDK.
 
@@ -72,7 +72,7 @@ An example of system config:
       },
       "PROJECT_ID": "my-firebase-instance"
     },
-    "image": "sesamcommunity/sesam-firebase-nodesdk:latest",
+    "image": "sesamcommunity/firebase:latest",
     "port": 5000
   }
 },
