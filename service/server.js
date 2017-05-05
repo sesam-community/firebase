@@ -34,11 +34,11 @@ var decode = function (since) {
 
 var router = Router();
 
-router.get("/:path", function (request, response) {
+router.get("/.*", function (request, response) {
   var query = url.parse(request.url, true).query;
   var updatedPath = query.since_path;
   var updated = decode(query.since);
-  var path = request.params.path;
+  var path = request.url;
   var ref = admin.database().ref(path);
   if (updatedPath && updated) {
     ref = ref.orderByChild(updatedPath).startAt(updated);
@@ -64,8 +64,8 @@ router.get("/:path", function (request, response) {
   });
 });
 
-router.post("/:path", function (request, response) {
-  var path = request.params.path;
+router.post("/.*", function (request, response) {
+  var path = request.url;
   var ref = admin.database().ref(path);
   var entities = request.post;
   // might get one entity or a list
