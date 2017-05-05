@@ -35,10 +35,11 @@ var decode = function (since) {
 var router = Router();
 
 router.get("/.*", function (request, response) {
-  var query = url.parse(request.url, true).query;
+  var parsedUrl = url.parse(request.url, true);
+  var query = parsedUrl.query;
   var updatedPath = query.since_path;
   var updated = decode(query.since);
-  var path = request.url;
+  var path = parsedUrl.pathname;
   var ref = admin.database().ref(path);
   if (updatedPath && updated) {
     ref = ref.orderByChild(updatedPath).startAt(updated);
@@ -65,7 +66,8 @@ router.get("/.*", function (request, response) {
 });
 
 router.post("/.*", function (request, response) {
-  var path = request.url;
+  var parsedUrl = url.parse(request.url, true);
+  var path = parsedUrl.pathname;
   var ref = admin.database().ref(path);
   var entities = request.post;
   // might get one entity or a list
