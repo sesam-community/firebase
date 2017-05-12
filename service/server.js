@@ -45,7 +45,9 @@ router.get("/.*", function (request, response) {
     ref = ref.orderByChild(updatedPath).startAt(updated);
   }
   ref.once("value", function (snapshot) {
-    var result = [];
+    var counter = 0;
+    response.writeHead(200, { "Content-Type": "application/json" });
+    response.write("[");
     var entities = snapshot.forEach(function (data) {
       var val = data.val();
       var since = val[updatedPath];
@@ -58,10 +60,16 @@ router.get("/.*", function (request, response) {
         entity["_updated"] = encode(since);
       }
       Object.assign(entity, val);
-      result.push(entity);
+      if (counter == 0){
+        response.write(JSON.stringify(entity));
+        counter++;
+      }
+      else {
+        response.write("," + JSON.stringify(entity) );
+      }
     });
-    response.writeHead(200, { "Content-Type": "application/json" });
-    response.end(JSON.stringify(result));
+    response.write("]");
+    response.end();
   });
 });
 
