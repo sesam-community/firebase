@@ -10,4 +10,4 @@ services:
 script: true
 
 after_success:
-  - bash <(curl -s https://raw.githubusercontent.com/sesam-community/guidelines/master/after_success.sh)
+  - bash <(curl -s https://raw.githubusercontent.com/sesam-community/guidelines/cd58a6c2f93df66954bb970d2b1c1f8977ec1ff5/after_success.sh)
