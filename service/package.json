@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "firebase-admin": "^4.2.1",
-    "node-simple-router": "^0.10.0"
+    "express": "^4.15.3",
+    "firebase-admin": "^4.2.1"
   }
 }
