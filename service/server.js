@@ -1,9 +1,12 @@
 var express = require('express');
+var bodyParser = require('body-parser');
+var morgan = require('morgan');
 var url = require('url');
 var admin = require("firebase-admin");
 
 var serviceAccount = JSON.parse(process.env.KEYFILE);
 var projectId = process.env.PROJECT_ID;
+var parserLimit = process.env.PARSER_LIMIT || '1000kb';
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -31,6 +34,9 @@ var decode = function (since) {
 };
 
 var app = express();
+
+app.use(bodyParser.json({limit: parserLimit}));
+app.use(morgan('tiny'));
 
 app.get(/.*/, function (request, response) {
   var parsedUrl = url.parse(request.url, true);
@@ -75,7 +81,7 @@ app.post(/.*/, function (request, response) {
   var parsedUrl = url.parse(request.url, true);
   var path = parsedUrl.pathname;
   var ref = admin.database().ref(path);
-  var entities = request.post;
+  var entities = request.body;
   // might get one entity or a list
   var entities = [].concat(entities);
 
