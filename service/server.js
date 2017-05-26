@@ -84,7 +84,12 @@ app.get(/.*/, function (request, response) {
 app.post(/.*/, function (request, response) {
   var parsedUrl = url.parse(request.url, true);
   var path = parsedUrl.pathname;
-  var ref = admin.database().ref(path);
+  try {
+    var ref = admin.database().ref(path);
+  } catch (err) {
+    console.error("Failed to get database", { path: path, url: request.url});
+    throw err;
+  }
   var entities = request.body;
   // might get one entity or a list
   var entities = [].concat(entities);
