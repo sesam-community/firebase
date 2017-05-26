@@ -2,7 +2,7 @@
   "dependencies": {
     "body-parser": "^1.17.2",
     "express": "^4.15.3",
-    "firebase-admin": "^4.2.1",
+    "firebase-admin": "^5.0.0",
     "morgan": "^1.8.1"
   }
 }
