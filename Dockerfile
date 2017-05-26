@@ -8,4 +8,4 @@ COPY ./service /service
 WORKDIR /service
 RUN npm install
 EXPOSE 5000
-CMD [ "node", "server.js", "--expose-gc" ]
+CMD [ "node", "--expose-gc", "server.js" ]

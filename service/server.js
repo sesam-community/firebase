@@ -143,7 +143,7 @@ app.post(/.*/, function (request, response) {
       console.error("Failed to set", entity, error);
     }
   });
-  gc();
+  global.gc();
 });
 
 app.listen(5000, "0.0.0.0", function () {
