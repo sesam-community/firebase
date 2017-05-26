@@ -35,6 +35,10 @@ var decode = function (since) {
 
 var app = express();
 
+console.error("Testing console.error", {foo: "bar"});
+console.log("Testing console.log", {foo: "bar"});
+
+
 app.use(bodyParser.json({limit: parserLimit}));
 app.use(morgan('tiny'));
 
