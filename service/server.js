@@ -124,7 +124,15 @@ app.post(/.*/, function (request, response) {
         filtered[k] = entity[k];
       });
     }
-    ref.child(id).set(filtered, function(error) { completionHandler(entity, error) });
+    try {
+      ref.child(id).set(filtered, function (error) {
+        completionHandler(entity, error)
+      });
+    } catch (error) {
+      errors.push(error);
+      notCompleted--;
+      console.error("Failed to set", entity, error);
+    }
   });
 });
 
