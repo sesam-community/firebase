@@ -58,6 +58,8 @@ If you want to create a server side value inside Firebase when writing entities,
 
 (see https://firebase.google.com/docs/reference/rest/database/#section-param-query for more info)
 
+Make sure that your ids doesn't contain ".", "#", "$", "\", or "]". Firebase doesn't support that.
+
 An example of system config: 
 
 ```json

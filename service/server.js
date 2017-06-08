@@ -1,11 +1,12 @@
-// Load the http module to create an http server.
-var http = require('http');
-var Router = require('node-simple-router');
+var express = require('express');
+var bodyParser = require('body-parser');
+var morgan = require('morgan');
 var url = require('url');
 var admin = require("firebase-admin");
 
 var serviceAccount = JSON.parse(process.env.KEYFILE);
 var projectId = process.env.PROJECT_ID;
+var parserLimit = process.env.PARSER_LIMIT || '1000kb';
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -32,9 +33,12 @@ var decode = function (since) {
   }
 };
 
-var router = Router();
+var app = express();
 
-router.get("/.*", function (request, response) {
+app.use(bodyParser.json({limit: parserLimit}));
+app.use(morgan('tiny'));
+
+app.get(/.*/, function (request, response) {
   var parsedUrl = url.parse(request.url, true);
   var query = parsedUrl.query;
   var updatedPath = query.since_path;
@@ -73,17 +77,24 @@ router.get("/.*", function (request, response) {
   });
 });
 
-router.post("/.*", function (request, response) {
+app.post(/.*/, function (request, response) {
   var parsedUrl = url.parse(request.url, true);
   var path = parsedUrl.pathname;
+  if (parsedUrl.query.root == "true"){
+        path == "/"
+  }
+   else if (path == "/" || parsedUrl.query.root == "false") {
+      console.error("Path cannot be empty")
+      response.status(400).send("Missing path - cannot write to top node in firebase");
+      return;
+  }
   var ref = admin.database().ref(path);
-  var entities = request.post;
+  var entities = request.body;
   // might get one entity or a list
   var entities = [].concat(entities);
 
   if (entities.length == 0) {
-    response.writeHead(200, { "Content-Type": "plain/text" });
-    response.end("Done, nothing to do!");
+    response.send("Done!");
   }
 
   var notCompleted = entities.length;
@@ -96,11 +107,9 @@ router.post("/.*", function (request, response) {
     }
     if (notCompleted == 0) {
       if (errors.length > 0) {
-        response.writeHead(500, { "Content-Type": "plain/text" });
-        response.end("Oops, something went wrong, check server log!");
+        response.status(500).send('Oops, something went wrong, check server log!');
       } else {
-        response.writeHead(200, { "Content-Type": "plain/text" });
-        response.end("Done!");
+        response.send("Done!");
       }
     } else {
       // nice to get some progress when handling huge number of entities
@@ -123,15 +132,19 @@ router.post("/.*", function (request, response) {
         filtered[k] = entity[k];
       });
     }
-    ref.child(id).set(filtered, function(error) { completionHandler(entity, error) });
+    try {
+      ref.child(id).set(filtered, function (error) {
+        completionHandler(entity, error)
+      });
+    } catch (error) {
+      errors.push(error);
+      notCompleted--;
+      console.error("Failed to set", entity, error);
+    }
   });
 });
 
-// Configure our HTTP server to use router function
-var server = http.createServer(router);
+app.listen(5000, "0.0.0.0", function () {
+  console.log("Server running at http://0.0.0.0:5000/");
+});
 
-// Listen on port 5000, IP defaults to 127.0.0.1
-server.listen(5000, "0.0.0.0");
-
-// Put a friendly message on the terminal
-console.log("Server running at http://0.0.0.0:5000/");
