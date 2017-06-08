@@ -80,10 +80,13 @@ app.get(/.*/, function (request, response) {
 app.post(/.*/, function (request, response) {
   var parsedUrl = url.parse(request.url, true);
   var path = parsedUrl.pathname;
-  if (path == "/"){
-    console.error("Path cannot be empty")
+  if (parsedUrl.query.root == "true"){
+        path == "/"
+  }
+   else if (path == "/" || parsedUrl.query.root == "false") {
+      console.error("Path cannot be empty")
       response.status(400).send("Missing path - cannot write to top node in firebase");
-    return;
+      return;
   }
   var ref = admin.database().ref(path);
   var entities = request.body;
