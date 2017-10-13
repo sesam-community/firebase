@@ -123,6 +123,7 @@ app.post(/.*/, function (request, response) {
     var id = entity["_id"];
     var filtered;
     if (entity["_deleted"] && entity["_deleted"] === true) {
+      console.log("_delete set to true. Deleting entity with _id: %s", id);
       filtered = null;
     } else {
       filtered = {};
